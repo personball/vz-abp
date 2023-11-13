@@ -1,6 +1,8 @@
-init by
+# readme
 
-```
+## Base On
+
+``` bash
 mkdir CompanyName.ProjectName.ModuleName
 cd CompanyName.ProjectName.ModuleName
 abp new CompanyName.ProjectName.ModuleName -t module --no-ui
@@ -8,7 +10,7 @@ abp new CompanyName.ProjectName.ModuleName -t module --no-ui
 
 - replace sqlserver with postgresql
 
-# TODO
+## Next TODO
 
 - 修改 StringEncryption.DefaultPassPhrase
 - 需要 redis 实例，默认密码 123qwe
