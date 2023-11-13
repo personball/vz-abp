@@ -15,3 +15,11 @@ abp new CompanyName.ProjectName.ModuleName -t module --no-ui
 - 修改 StringEncryption.DefaultPassPhrase
 - 需要 redis 实例，默认密码 123qwe
 - 需要 postgresql 实例，默认密码 myPassword，用 postgres 账号
+
+
+## setup git hook to enforce commit-msg format
+
+```bash
+./set-git-hook.sh
+conventional-changelog -p angular -i CHANGELOG.md -s
+```
