@@ -34,6 +34,7 @@ https://code.visualstudio.com/Docs/editor/debugging#_multitarget-debugging
 ## setup git hook to enforce commit-msg format
 
 Auto tag and generate changelog.md by `commit-and-tag-version`
+[conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
 
 ```bash
 ./set-git-hook.sh
