@@ -35,5 +35,7 @@ https://code.visualstudio.com/Docs/editor/debugging#_multitarget-debugging
 
 ```bash
 ./set-git-hook.sh
-conventional-changelog -p angular -i CHANGELOG.md -s
+npm i -g commit-and-tag-version
+commit-and-tag-version --packageFiles Com
+# conventional-changelog -p angular -i CHANGELOG.md -s # TODO: https://github.com/absolute-version/commit-and-tag-version#bumpfiles-packagefiles-and-updaters
 ```

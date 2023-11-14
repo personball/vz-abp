@@ -1,0 +1,14 @@
+{
+    "packageFiles": [
+        {
+            "filename": "CompanyName.ProjectName/common.props",
+            "type": "csproj"
+        }
+    ],
+    "bumpFiles": [
+        {
+            "filename": "CompanyName.ProjectName/common.props",
+            "type": "csproj"
+        }
+    ]
+}

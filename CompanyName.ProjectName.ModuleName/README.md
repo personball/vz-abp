@@ -21,5 +21,5 @@ abp new CompanyName.ProjectName.ModuleName -t module --no-ui
 
 ```bash
 ./set-git-hook.sh
-conventional-changelog -p angular -i CHANGELOG.md -s
+conventional-changelog -p angular -i CHANGELOG.md -s # TODO: https://github.com/absolute-version/commit-and-tag-version#bumpfiles-packagefiles-and-updaters
 ```
