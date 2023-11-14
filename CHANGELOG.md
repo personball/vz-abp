@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.0](https://github.com/personball/vz-abp/compare/v0.2.0...v0.3.0) (2023-11-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* update git hook script
+
+### Features
+
+* update git hook script ([4d916ff](https://github.com/personball/vz-abp/commit/4d916ffb4678f9eaf5150fef1af9064fa1c07582))
+
 ## [0.2.0](https://github.com/personball/vz-abp/compare/v0.1.1...v0.2.0) (2023-11-14)
 
 
