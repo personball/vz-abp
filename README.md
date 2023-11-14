@@ -23,7 +23,7 @@ vz rn CompanyName.ProjectName -r CompanyName=VZero -r ProjectName=Demo -o .
 vz rn CompanyName.ProjectName.ModuleName -r CompanyName=VZero -r ProjectName=Demo -r ModuleName=IM -o .
 ```
 
-## setup git hook to enforce commit-msg format
+## 设置 Git Hook 以统一提交日志格式便于自动生成更新日志
 
 Auto tag and generate changelog.md by `commit-and-tag-version`
 
