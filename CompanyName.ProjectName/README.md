@@ -33,9 +33,10 @@ https://code.visualstudio.com/Docs/editor/debugging#_multitarget-debugging
 
 ## setup git hook to enforce commit-msg format
 
+Auto tag and generate changelog.md by `commit-and-tag-version`
+
 ```bash
 ./set-git-hook.sh
-npm i -g commit-and-tag-version
-commit-and-tag-version --packageFiles Com
-# conventional-changelog -p angular -i CHANGELOG.md -s # TODO: https://github.com/absolute-version/commit-and-tag-version#bumpfiles-packagefiles-and-updaters
+npm i -g commit-and-tag-version # https://github.com/absolute-version/commit-and-tag-version#bumpfiles-packagefiles-and-updaters
+commit-and-tag-version # --frist-release 
 ```

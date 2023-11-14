@@ -22,3 +22,13 @@ dotnet tool install vz-generator -g
 vz rn CompanyName.ProjectName -r CompanyName=VZero -r ProjectName=Demo -o .
 vz rn CompanyName.ProjectName.ModuleName -r CompanyName=VZero -r ProjectName=Demo -r ModuleName=IM -o .
 ```
+
+## setup git hook to enforce commit-msg format
+
+Auto tag and generate changelog.md by `commit-and-tag-version`
+
+```bash
+./set-git-hook.sh
+npm i -g commit-and-tag-version # https://github.com/absolute-version/commit-and-tag-version#bumpfiles-packagefiles-and-updaters
+commit-and-tag-version # --frist-release 
+```
