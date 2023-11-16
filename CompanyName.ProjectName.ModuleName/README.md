@@ -26,3 +26,5 @@ Auto tag and generate changelog.md by `commit-and-tag-version`
 npm i -g commit-and-tag-version # https://github.com/absolute-version/commit-and-tag-version#bumpfiles-packagefiles-and-updaters
 commit-and-tag-version # --frist-release 
 ```
+
+config `.versionrc` follow: [conventional-changelog-config-spec](https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.2.0/schema.json)
