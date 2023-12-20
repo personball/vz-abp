@@ -44,3 +44,49 @@ commit-and-tag-version # --frist-release
 
 config `.versionrc` follow: [conventional-changelog-config-spec](https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.2.0/schema.json)
 
+
+## ProjectName
+
+```mermaid
+C4Context
+    title System Context diagram for ProjectName
+
+    Person(user,"User")
+    
+    Enterprise_Boundary(b0,"ProjectName System"){
+        Person(admin,"Admin")
+        System(home,"ProjectName System")
+    }
+
+    Rel(user, home, "View")
+    Rel(admin,home,"Management")
+
+```
+
+```mermaid
+C4Container
+    title Container diagram for ProjectName System
+
+    Person(user,"User")
+    Person(admin,"Admin")
+
+    System_Boundary(c1,"ProjectName System"){
+        Container(home,"ProjectName Web","MPA PC Web","PC Web")
+        Container(spa,"Management","SPA Vue","Admin Management")
+        Container(auth,"ProjectName AuthServer","OAuth2.0")    
+        Boundary(b9,"internal"){
+          Container(api,"ProjectName HttpApi.Host","ProjectName Api","Apis for Management and PC Web")
+          ContainerDb(db0,"postgresql","Database")
+        }
+    }
+
+    Rel(user,home,"HTTPS")
+  
+    Rel(home,api,"Access Apis")
+    Rel(api,db0,"Access Data")
+
+    Rel(admin,spa,"HTTPS")
+    BiRel(spa,auth,"HTTPS<br>OIDC Login")
+    Rel(spa,api,"HTTPS")
+
+```
