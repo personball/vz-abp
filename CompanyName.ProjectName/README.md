@@ -30,6 +30,11 @@ abp install-libs
 
 https://code.visualstudio.com/Docs/editor/debugging#_multitarget-debugging
 
+### 数据库迁移和 k8s 配置
+
+通过执行 `CompanyName.ProjectName.DbMigrator` 进行数据库迁移和 DataSeed。  
+
+可以在该项目构建为 docker 镜像后，作为 initContainer 和 `CompanyName.ProjectName.HttpApi.Host` 的镜像一起组成 k8s pod 。
 
 ## setup git hook to enforce commit-msg format
 
