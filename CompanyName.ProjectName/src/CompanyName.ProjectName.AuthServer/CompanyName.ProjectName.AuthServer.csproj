@@ -37,6 +37,7 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="7.0.0" />
     <PackageReference Include="DistributedLock.Redis" Version="1.0.2" />
     <PackageReference Include="SkyAPM.Agent.AspNetCore" Version="2.1.0" />
+    <PackageReference Include="WebApiClientCore" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>

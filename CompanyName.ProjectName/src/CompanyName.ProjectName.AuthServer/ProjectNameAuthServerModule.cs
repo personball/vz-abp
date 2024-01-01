@@ -38,6 +38,8 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using CompanyName.ProjectName.Identity.Wechat;
+using Microsoft.Extensions.Configuration;
 
 namespace CompanyName.ProjectName;
 
@@ -112,7 +114,7 @@ public class ProjectNameAuthServerModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
-        
+
         context.Services.AddHealthChecks();
         context.Services.Configure<HealthCheckPublisherOptions>(options =>
         {
@@ -211,6 +213,25 @@ public class ProjectNameAuthServerModule : AbpModule
         {
             // see https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-3.1
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        });
+
+
+        // TODO: Wechat H5 AddOAuth AuthenticationScheme ?
+
+        // TODO: 注册第三方认证
+        // Configure<AbpIdentityOptions>(options =>
+        // {
+        //     options.ExternalLoginProviders.Add<FakeExternalLoginProvider>(FakeExternalLoginProvider.Name);
+        // });
+
+
+        context.Services.AddHttpApi(typeof(IWechatSnsUserApi), opt =>
+        {
+            configuration.GetSection("IWechatSnsUserApi").Bind(opt);
+        });
+        context.Services.AddHttpApi(typeof(IWeChatAppApi), opt =>
+        {
+            configuration.GetSection("IWeChatAppApi").Bind(opt);
         });
     }
 
