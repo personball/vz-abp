@@ -5,7 +5,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:7.0 AS build
 WORKDIR /src
 COPY . .
-WORKDIR /src/templates/service/host/CompanyName.ProjectName.DbMigrator
+WORKDIR /src/CompanyName.ProjectName.DbMigrator
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
 

@@ -1,3 +1,5 @@
+# call this from project root:
+# 
 FROM mcr.microsoft.com/dotnet/core/aspnet:7.0-bullseye-slim AS base
 WORKDIR /app
 EXPOSE 80
