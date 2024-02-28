@@ -3,7 +3,7 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:7.0 AS build
-WORKDIR /src
+WORKDIR /
 COPY . .
 WORKDIR /src/host/CompanyName.ProjectName.ModuleName.HttpApi.Host
 RUN dotnet restore -nowarn:msb3202,nu1503
