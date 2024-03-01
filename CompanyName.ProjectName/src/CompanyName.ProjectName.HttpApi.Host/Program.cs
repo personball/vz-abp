@@ -43,7 +43,7 @@ public class Program
                  .UseSerilog((ctx, config) =>
                 {
                     config.ReadFrom
-                        .Configuration(ctx.Configuration.GetSection("Logging:UdunIP"))
+                        .Configuration(ctx.Configuration.GetSection("Logging:ProjectName"))
                         .Enrich.FromLogContext()
 #if DEBUG
                         .WriteTo.Async(c => c.Console());
