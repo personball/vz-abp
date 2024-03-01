@@ -66,45 +66,44 @@ public class ProjectNameAuthServerModule : AbpModule
             var issuer = new Uri(configuration["AuthServer:Authority"]!);
 
             b
-            // .AddServer(builder =>
-            // {
-            //     if (hostingEnvironment.IsDevelopment())
-            //     {
-            //         builder.UseAspNetCore().DisableTransportSecurityRequirement();
-            //     }
-            //     else
-            //     {
-            //         builder.UseAspNetCore();
-            //     }
+            .AddServer(builder =>
+            {
+                if (hostingEnvironment.IsDevelopment())
+                {
+                    builder.UseAspNetCore().DisableTransportSecurityRequirement();
+                }
+                else
+                {
+                    builder.UseAspNetCore();
+                }
 
-            //     builder.SetAccessTokenLifetime(TimeSpan.FromDays(90));
+                builder.SetAccessTokenLifetime(TimeSpan.FromDays(90));
 
-            //     // override all endpoint uris
-            //     builder.SetIssuer(issuer);
-            //     builder.SetConfigurationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/openid-configuration"));
-            //     builder.SetCryptographyEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/jwks"));
-            //     builder.SetAuthorizationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/authorize"));
-            //     builder.SetTokenEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/token"));
-            //     builder.SetIntrospectionEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/introspect"));
-            //     builder.SetLogoutEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/logout"));
-            //     builder.SetRevocationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/revocat"));
-            //     builder.SetUserinfoEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/userinfo"));
-            //     builder.SetDeviceEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/device"));
-            //     builder.SetVerificationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/verify"));
+                // override all endpoint uris
+                builder.SetIssuer(issuer);
+                builder.SetConfigurationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/openid-configuration"));
+                builder.SetCryptographyEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/jwks"));
+                builder.SetAuthorizationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/authorize"));
+                builder.SetTokenEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/token"));
+                builder.SetIntrospectionEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/introspect"));
+                builder.SetLogoutEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/logout"));
+                builder.SetRevocationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/revocat"));
+                builder.SetUserinfoEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/userinfo"));
+                builder.SetDeviceEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/device"));
+                builder.SetVerificationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/verify"));
 
-            //     // https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html
-            //     // https://learn.microsoft.com/zh-cn/dotnet/core/additional-tools/self-signed-certificates-guide#with-openssl
-            //     var certificate = new X509Certificate2(
-            //         Path.Combine(AppContext.BaseDirectory, configuration["OpenIddict:CAFilePath"]));
-            //     builder.AddSigningCertificate(certificate);
-            //     builder.AddEncryptionCertificate(certificate);
-
-            // })
+                // https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html
+                // https://learn.microsoft.com/zh-cn/dotnet/core/additional-tools/self-signed-certificates-guide#with-openssl
+                var certificate = new X509Certificate2(
+                    Path.Combine(AppContext.BaseDirectory, configuration["OpenIddict:CAFilePath"])); // TODO: 需生成证书 pki/ca.pfx
+                builder.AddSigningCertificate(certificate);
+                builder.AddEncryptionCertificate(certificate);
+            })
             .AddValidation(options =>
             {
                 options.AddAudiences("ProjectName");
-                // builder.SetIssuer(issuer); // TODO: to be verify
-                options.UseLocalServer(); // TODO: only local development env
+                builder.SetIssuer(issuer);
+                options.UseLocalServer();
                 options.UseAspNetCore();
             });
         });
@@ -209,12 +208,12 @@ public class ProjectNameAuthServerModule : AbpModule
             });
         });
 
+        // TODO: ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
         context.Services.Configure<ForwardedHeadersOptions>(options =>
         {
             // see https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-3.1
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
         });
-
 
         // TODO: Wechat H5 AddOAuth AuthenticationScheme ?
 
@@ -233,6 +232,8 @@ public class ProjectNameAuthServerModule : AbpModule
         {
             configuration.GetSection("IWeChatAppApi").Bind(opt);
         });
+
+        Configure<WechatOptions>(options => configuration.GetSection(WechatOptions.SectionName).Bind(options));
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
