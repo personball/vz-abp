@@ -29,7 +29,7 @@ Auto tag and generate changelog.md by `commit-and-tag-version`
 [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
 
 ```bash
-./set-git-hook.sh
+./set-git-hook.sh # For windows can be executed in git-bash
 npm i -g commit-and-tag-version # https://github.com/absolute-version/commit-and-tag-version#bumpfiles-packagefiles-and-updaters
 commit-and-tag-version # --frist-release 
 ```
