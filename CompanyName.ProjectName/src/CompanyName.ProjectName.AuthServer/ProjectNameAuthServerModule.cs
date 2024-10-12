@@ -102,7 +102,7 @@ public class ProjectNameAuthServerModule : AbpModule
             .AddValidation(options =>
             {
                 options.AddAudiences("ProjectName");
-                builder.SetIssuer(issuer);
+                options.SetIssuer(issuer);
                 options.UseLocalServer();
                 options.UseAspNetCore();
             });
@@ -233,7 +233,7 @@ public class ProjectNameAuthServerModule : AbpModule
             configuration.GetSection("IWeChatAppApi").Bind(opt);
         });
 
-        Configure<WechatOptions>(options => configuration.GetSection(WechatOptions.SectionName).Bind(options));
+        //Configure<WechatOptions>(options => configuration.GetSection(WechatOptions.SectionName).Bind(options));
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
