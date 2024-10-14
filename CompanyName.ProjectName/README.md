@@ -27,6 +27,10 @@ abp install-libs
 - 修改 StringEncryption.DefaultPassPhrase
 - 需要 redis 实例，默认密码 123qwe
 - 需要 postgresql 实例，默认密码 myPassword，用 postgres 账号
+- AuthServer 配置自签证书 `pki/ca.pfx`
+  - 生成 ca.pfx [self-signed-certificates-guide](https://learn.microsoft.com/en-us/dotnet/core/additional-tools/self-signed-certificates-guide)
+  - 添加 appsettings.json 配置节
+  - 配置 csproj 如果较新则复制
 
 https://code.visualstudio.com/Docs/editor/debugging#_multitarget-debugging
 
