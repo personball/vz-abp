@@ -13,15 +13,10 @@ namespace CompanyName.ProjectName;
     typeof(AbpAutofacModule),
     typeof(AbpTestBaseModule),
     typeof(AbpAuthorizationModule),
-    typeof(ProjectNameDomainModule)
+    typeof(AbpBackgroundJobsAbstractionsModule)
     )]
 public class ProjectNameTestBaseModule : AbpModule
 {
-    public override void PreConfigureServices(ServiceConfigurationContext context)
-    {
-
-    }
-
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         Configure<AbpBackgroundJobOptions>(options =>

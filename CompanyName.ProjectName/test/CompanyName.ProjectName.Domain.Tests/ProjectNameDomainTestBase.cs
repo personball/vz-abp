@@ -1,6 +1,10 @@
-﻿namespace CompanyName.ProjectName;
+﻿using Volo.Abp.Modularity;
 
-public abstract class ProjectNameDomainTestBase : ProjectNameTestBase<ProjectNameDomainTestModule>
+namespace CompanyName.ProjectName;
+
+/* Inherit from this class for your domain layer tests. */
+public abstract class ProjectNameDomainTestBase<TStartupModule> : ProjectNameTestBase<TStartupModule>
+    where TStartupModule : IAbpModule
 {
 
 }

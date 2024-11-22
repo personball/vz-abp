@@ -8,8 +8,8 @@ abp.io
 BaseOn:
 
 ``` bash
-abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf
-abp new CompanyName.ProjectName.ModuleName -t module --no-ui 
+abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf -v 8.3.3
+abp new CompanyName.ProjectName.ModuleName -t module --no-ui -v 8.3.3
 ```
 
 ## Usage

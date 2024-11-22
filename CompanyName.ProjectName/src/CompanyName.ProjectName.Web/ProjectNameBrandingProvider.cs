@@ -1,4 +1,6 @@
-﻿using Volo.Abp.Ui.Branding;
+﻿using Microsoft.Extensions.Localization;
+using CompanyName.ProjectName.Localization;
+using Volo.Abp.Ui.Branding;
 using Volo.Abp.DependencyInjection;
 
 namespace CompanyName.ProjectName.Web;
@@ -6,5 +8,12 @@ namespace CompanyName.ProjectName.Web;
 [Dependency(ReplaceServices = true)]
 public class ProjectNameBrandingProvider : DefaultBrandingProvider
 {
-    public override string AppName => "ProjectName";
+    private IStringLocalizer<ProjectNameResource> _localizer;
+
+    public ProjectNameBrandingProvider(IStringLocalizer<ProjectNameResource> localizer)
+    {
+        _localizer = localizer;
+    }
+
+    public override string AppName => _localizer["AppName"];
 }

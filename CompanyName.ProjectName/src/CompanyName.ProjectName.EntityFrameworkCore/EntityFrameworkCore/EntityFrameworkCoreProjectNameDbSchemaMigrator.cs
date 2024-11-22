@@ -20,7 +20,7 @@ public class EntityFrameworkCoreProjectNameDbSchemaMigrator
 
     public async Task MigrateAsync()
     {
-        /* We intentionally resolving the ProjectNameDbContext
+        /* We intentionally resolve the ProjectNameDbContext
          * from IServiceProvider (instead of directly injecting it)
          * to properly get the connection string of the current tenant in the
          * current scope.

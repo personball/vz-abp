@@ -86,7 +86,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         var webClientId = configurationSection["ProjectName_Web:ClientId"];
         if (!webClientId.IsNullOrWhiteSpace())
         {
-            var webClientRootUrl = configurationSection["ProjectName_Web:RootUrl"].EnsureEndsWith('/');
+            var webClientRootUrl = configurationSection["ProjectName_Web:RootUrl"]!.EnsureEndsWith('/');
+            var webClientRootUrl2 = configurationSection["ProjectName_Web:RootUrl2"]!.EnsureEndsWith('/');
 
             /* ProjectName_Web client is only needed if you created a tiered
              * solution. Otherwise, you can delete this client. */
@@ -101,9 +102,15 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.AuthorizationCode, OpenIddictConstants.GrantTypes.Implicit
                 },
                 scopes: commonScopes,
-                redirectUri: $"{webClientRootUrl}signin-oidc",
+                redirectUris: new List<string> {
+                    $"{webClientRootUrl}signin-oidc",
+                    $"{webClientRootUrl2}signin-oidc"
+                },
                 clientUri: webClientRootUrl,
-                postLogoutRedirectUri: $"{webClientRootUrl}signout-callback-oidc"
+                postLogoutRedirectUris: new List<string> {
+                    $"{webClientRootUrl}signout-callback-oidc",
+                    $"{webClientRootUrl2}signout-callback-oidc"
+                }
             );
         }
 
@@ -111,7 +118,9 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         var consoleAndAngularClientId = configurationSection["ProjectName_App:ClientId"];
         if (!consoleAndAngularClientId.IsNullOrWhiteSpace())
         {
-            var consoleAndAngularClientRootUrl = configurationSection["ProjectName_App:RootUrl"]?.TrimEnd('/');
+            var consoleAndAngularClientRootUrl = configurationSection["ProjectName_App:RootUrl"]!.TrimEnd('/');
+            var consoleAndAngularClientRootUrl2 = configurationSection["ProjectName_App:RootUrl2"]!.TrimEnd('/');
+
             await CreateApplicationAsync(
                 name: consoleAndAngularClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -125,9 +134,15 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.RefreshToken
                 },
                 scopes: commonScopes,
-                redirectUri: consoleAndAngularClientRootUrl,
+                redirectUris: new List<string> {
+                    consoleAndAngularClientRootUrl,
+                    consoleAndAngularClientRootUrl2
+                },
                 clientUri: consoleAndAngularClientRootUrl,
-                postLogoutRedirectUri: consoleAndAngularClientRootUrl
+                postLogoutRedirectUris: new List<string> {
+                    consoleAndAngularClientRootUrl,
+                    consoleAndAngularClientRootUrl2
+                }
             );
         }
 
@@ -135,7 +150,9 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         var vue3ClientId = configurationSection["ProjectName_Vue:ClientId"];
         if (!vue3ClientId.IsNullOrWhiteSpace())
         {
-            var vue3ClientRootUrl = configurationSection["ProjectName_Vue:RootUrl"]?.TrimEnd('/');
+            var vue3ClientRootUrl = configurationSection["ProjectName_Vue:RootUrl"]!.TrimEnd('/');
+            var vue3ClientRootUrl2 = configurationSection["ProjectName_Vue:RootUrl2"]!.TrimEnd('/');
+
             await CreateApplicationAsync(
                 name: vue3ClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -149,38 +166,54 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.RefreshToken
                 },
                 scopes: commonScopes,
-                redirectUri: $"{vue3ClientRootUrl}/oidc-callback",
+                redirectUris: new List<string> {
+                    $"{vue3ClientRootUrl}/oidc-callback",
+                    $"{vue3ClientRootUrl2}/oidc-callback"
+                },
                 clientUri: vue3ClientRootUrl,
-                postLogoutRedirectUri: vue3ClientRootUrl
+                postLogoutRedirectUris: new List<string> {
+                    vue3ClientRootUrl,
+                    vue3ClientRootUrl2
+                }
             );
         }
 
         // Blazor Client
-        var blazorClientId = configurationSection["ProjectName_Blazor:ClientId"];
-        if (!blazorClientId.IsNullOrWhiteSpace())
-        {
-            var blazorRootUrl = configurationSection["ProjectName_Blazor:RootUrl"]?.TrimEnd('/');
-
-            await CreateApplicationAsync(
-                name: blazorClientId!,
-                type: OpenIddictConstants.ClientTypes.Public,
-                consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                displayName: "Blazor Application",
-                secret: null,
-                grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
-                scopes: commonScopes,
-                redirectUri: $"{blazorRootUrl}/authentication/login-callback",
-                clientUri: blazorRootUrl,
-                postLogoutRedirectUri: $"{blazorRootUrl}/authentication/logout-callback"
-            );
-        }
+        //var blazorClientId = configurationSection["ProjectName_Blazor:ClientId"];
+        //if (!blazorClientId.IsNullOrWhiteSpace())
+        //{
+        //    var blazorRootUrl = configurationSection["ProjectName_Blazor:RootUrl"]?.TrimEnd('/');
+        //    var blazorRootUrl2 = configurationSection["ProjectName_Blazor:RootUrl2"]?.TrimEnd('/');
+        //    await CreateApplicationAsync(
+        //        name: blazorClientId!,
+        //        type: OpenIddictConstants.ClientTypes.Public,
+        //        consentType: OpenIddictConstants.ConsentTypes.Implicit,
+        //        displayName: "Blazor Application",
+        //        secret: null,
+        //        grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
+        //        scopes: commonScopes,
+        //        redirectUris: new List<string>
+        //        {
+        //            $"{blazorRootUrl}/authentication/login-callback",
+        //            $"{blazorRootUrl2}/authentication/login-callback"
+        //        },
+        //        clientUri: blazorRootUrl,
+        //        postLogoutRedirectUris: new List<string>
+        //        {
+        //            $"{blazorRootUrl}/authentication/logout-callback",
+        //            $"{blazorRootUrl2}/authentication/logout-callback"
+        //        }
+        //    );
+        //}
 
         // Blazor Server Tiered Client
         var blazorServerTieredClientId = configurationSection["ProjectName_BlazorServerTiered:ClientId"];
         if (!blazorServerTieredClientId.IsNullOrWhiteSpace())
         {
             var blazorServerTieredRootUrl =
-                configurationSection["ProjectName_BlazorServerTiered:RootUrl"].EnsureEndsWith('/');
+                configurationSection["ProjectName_BlazorServerTiered:RootUrl"]!.EnsureEndsWith('/');
+            var blazorServerTieredRootUrl2 =
+                configurationSection["ProjectName_BlazorServerTiered:RootUrl2"]!.EnsureEndsWith('/');
 
             await CreateApplicationAsync(
                 name: blazorServerTieredClientId!,
@@ -193,9 +226,16 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.AuthorizationCode, OpenIddictConstants.GrantTypes.Implicit
                 },
                 scopes: commonScopes,
-                redirectUri: $"{blazorServerTieredRootUrl}signin-oidc",
+                redirectUris: new List<string> {
+                    $"{blazorServerTieredRootUrl}signin-oidc",
+                    $"{blazorServerTieredRootUrl2}signin-oidc"
+                },
                 clientUri: blazorServerTieredRootUrl,
-                postLogoutRedirectUri: $"{blazorServerTieredRootUrl}signout-callback-oidc"
+                postLogoutRedirectUris: new List<string>
+                {
+                    $"{blazorServerTieredRootUrl}signout-callback-oidc",
+                    $"{blazorServerTieredRootUrl2}signout-callback-oidc"
+                }
             );
         }
 
@@ -204,6 +244,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         if (!swaggerClientId.IsNullOrWhiteSpace())
         {
             var swaggerRootUrl = configurationSection["ProjectName_Swagger:RootUrl"]?.TrimEnd('/');
+            var swaggerRootUrl2 = configurationSection["ProjectName_Swagger:RootUrl2"]?.TrimEnd('/');
 
             await CreateApplicationAsync(
                 name: swaggerClientId!,
@@ -213,7 +254,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 secret: null,
                 grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
                 scopes: commonScopes,
-                redirectUri: $"{swaggerRootUrl}/swagger/oauth2-redirect.html",
+                redirectUris: new List<string> {
+                    $"{swaggerRootUrl}/swagger/oauth2-redirect.html",
+                    $"{swaggerRootUrl2}/swagger/oauth2-redirect.html"
+                },
                 clientUri: swaggerRootUrl
             );
         }
@@ -228,8 +272,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         List<string> grantTypes,
         List<string> scopes,
         string? clientUri = null,
-        string? redirectUri = null,
-        string? postLogoutRedirectUri = null,
+        List<string>? redirectUris = null,
+        List<string>? postLogoutRedirectUris = null,
         List<string>? permissions = null)
     {
         if (!string.IsNullOrEmpty(secret) && string.Equals(type, OpenIddictConstants.ClientTypes.Public,
@@ -249,7 +293,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         var application = new AbpApplicationDescriptor
         {
             ClientId = name,
-            Type = type,
+            ClientType = type,
             ClientSecret = secret,
             ConsentType = consentType,
             DisplayName = displayName,
@@ -271,7 +315,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             }
         }
 
-        if (!redirectUri.IsNullOrWhiteSpace() || !postLogoutRedirectUri.IsNullOrWhiteSpace())
+        if ((redirectUris != null && redirectUris.Any()) || (postLogoutRedirectUris != null && postLogoutRedirectUris.Any()))
         {
             application.Permissions.Add(OpenIddictConstants.Permissions.Endpoints.Logout);
         }
@@ -367,35 +411,41 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             }
         }
 
-        if (redirectUri != null)
+        if (redirectUris != null)
         {
-            if (!redirectUri.IsNullOrEmpty())
+            foreach (var redirectUri in redirectUris)
             {
-                if (!Uri.TryCreate(redirectUri, UriKind.Absolute, out var uri) || !uri.IsWellFormedOriginalString())
+                if (!redirectUri.IsNullOrEmpty())
                 {
-                    throw new BusinessException(L["InvalidRedirectUri", redirectUri]);
-                }
+                    if (!Uri.TryCreate(redirectUri, UriKind.Absolute, out var uri) || !uri.IsWellFormedOriginalString())
+                    {
+                        throw new BusinessException(L["InvalidRedirectUri", redirectUri]);
+                    }
 
-                if (application.RedirectUris.All(x => x != uri))
-                {
-                    application.RedirectUris.Add(uri);
+                    if (application.RedirectUris.All(x => x != uri))
+                    {
+                        application.RedirectUris.Add(uri);
+                    }
                 }
             }
         }
 
-        if (postLogoutRedirectUri != null)
+        if (postLogoutRedirectUris != null)
         {
-            if (!postLogoutRedirectUri.IsNullOrEmpty())
+            foreach (var postLogoutRedirectUri in postLogoutRedirectUris)
             {
-                if (!Uri.TryCreate(postLogoutRedirectUri, UriKind.Absolute, out var uri) ||
-                    !uri.IsWellFormedOriginalString())
+                if (!postLogoutRedirectUri.IsNullOrEmpty())
                 {
-                    throw new BusinessException(L["InvalidPostLogoutRedirectUri", postLogoutRedirectUri]);
-                }
+                    if (!Uri.TryCreate(postLogoutRedirectUri, UriKind.Absolute, out var uri) ||
+                        !uri.IsWellFormedOriginalString())
+                    {
+                        throw new BusinessException(L["InvalidPostLogoutRedirectUri", postLogoutRedirectUri]);
+                    }
 
-                if (application.PostLogoutRedirectUris.All(x => x != uri))
-                {
-                    application.PostLogoutRedirectUris.Add(uri);
+                    if (application.PostLogoutRedirectUris.All(x => x != uri))
+                    {
+                        application.PostLogoutRedirectUris.Add(uri);
+                    }
                 }
             }
         }

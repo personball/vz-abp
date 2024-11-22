@@ -9,13 +9,14 @@ using Volo.Abp.EntityFrameworkCore.Sqlite;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
+using Volo.Abp.SettingManagement;
 using Volo.Abp.Uow;
 
 namespace CompanyName.ProjectName.EntityFrameworkCore;
 
 [DependsOn(
+    typeof(ProjectNameApplicationTestModule),
     typeof(ProjectNameEntityFrameworkCoreModule),
-    typeof(ProjectNameTestBaseModule),
     typeof(AbpEntityFrameworkCoreSqliteModule)
     )]
 public class ProjectNameEntityFrameworkCoreTestModule : AbpModule
@@ -33,6 +34,11 @@ public class ProjectNameEntityFrameworkCoreTestModule : AbpModule
         {
             options.SaveStaticPermissionsToDatabase = false;
             options.IsDynamicPermissionStoreEnabled = false;
+        });
+        Configure<SettingManagementOptions>(options =>
+        {
+            options.SaveStaticSettingsToDatabase = false;
+            options.IsDynamicSettingStoreEnabled = false;
         });
         context.Services.AddAlwaysDisableUnitOfWorkTransaction();
 
@@ -59,7 +65,7 @@ public class ProjectNameEntityFrameworkCoreTestModule : AbpModule
 
     private static SqliteConnection CreateDatabaseAndGetConnection()
     {
-        var connection = new SqliteConnection("Data Source=:memory:");
+        var connection = new AbpUnitTestSqliteConnection("Data Source=:memory:");
         connection.Open();
 
         var options = new DbContextOptionsBuilder<ProjectNameDbContext>()

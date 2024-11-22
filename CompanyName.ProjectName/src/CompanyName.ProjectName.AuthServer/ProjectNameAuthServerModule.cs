@@ -1,23 +1,28 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using CompanyName.ProjectName.EntityFrameworkCore;
+using CompanyName.ProjectName.Identity.Wechat;
+using CompanyName.ProjectName.Localization;
+using CompanyName.ProjectName.MultiTenancy;
 using Localization.Resources.AbpUi;
 using Medallion.Threading;
 using Medallion.Threading.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using CompanyName.ProjectName.EntityFrameworkCore;
-using CompanyName.ProjectName.Localization;
-using CompanyName.ProjectName.MultiTenancy;
 using StackExchange.Redis;
 using Volo.Abp;
 using Volo.Abp.Account;
+using Volo.Abp.Account.Localization;
 using Volo.Abp.Account.Web;
-using Volo.Abp.AspNetCore.Mvc.UI;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
@@ -31,15 +36,10 @@ using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.OpenIddict;
+using Volo.Abp.Security.Claims;
 using Volo.Abp.UI.Navigation.Urls;
-using Volo.Abp.UI;
 using Volo.Abp.VirtualFileSystem;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using CompanyName.ProjectName.Identity.Wechat;
-using Microsoft.Extensions.Configuration;
 
 namespace CompanyName.ProjectName;
 
@@ -58,62 +58,75 @@ public class ProjectNameAuthServerModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
+        var hostingEnvironment = context.Services.GetHostingEnvironment();
+        var configuration = context.Services.GetConfiguration();
+
         PreConfigure<OpenIddictBuilder>(b =>
+         {
+             var issuer = new Uri(configuration["AuthServer:Authority"]!);
+
+             b
+             .AddServer(builder =>
+             {
+                 if (hostingEnvironment.IsDevelopment())
+                 {
+                     builder.UseAspNetCore().DisableTransportSecurityRequirement();
+                 }
+                 else
+                 {
+                     builder.UseAspNetCore();
+                 }
+
+                 builder.SetAccessTokenLifetime(TimeSpan.FromDays(90));
+
+                 // override all endpoint uris
+                 builder.SetIssuer(issuer);
+                 builder.SetConfigurationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/openid-configuration"));
+                 builder.SetCryptographyEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/jwks"));
+                 builder.SetAuthorizationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/authorize"));
+                 builder.SetTokenEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/token"));
+                 builder.SetIntrospectionEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/introspect"));
+                 builder.SetLogoutEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/logout"));
+                 builder.SetRevocationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/revocat"));
+                 builder.SetUserinfoEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/userinfo"));
+                 builder.SetDeviceEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/device"));
+                 builder.SetVerificationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/verify"));
+
+                 // https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html
+                 // https://learn.microsoft.com/zh-cn/dotnet/core/additional-tools/self-signed-certificates-guide#with-openssl
+                 var certificate = new X509Certificate2(
+                     Path.Combine(AppContext.BaseDirectory, configuration["OpenIddict:CAFilePath"])); // TODO: 需生成证书 pki/ca.pfx
+                 builder.AddSigningCertificate(certificate);
+                 builder.AddEncryptionCertificate(certificate);
+             })
+             .AddValidation(options =>
+             {
+                 options.AddAudiences("ProjectName");
+                 options.SetIssuer(issuer);
+                 options.UseLocalServer();
+                 options.UseAspNetCore();
+             });
+         });
+
+        if (!hostingEnvironment.IsDevelopment())
         {
-            var configuration = context.Services.GetConfiguration();
-            var hostingEnvironment = context.Services.GetHostingEnvironment();
-
-            var issuer = new Uri(configuration["AuthServer:Authority"]!);
-
-            b
-            .AddServer(builder =>
+            PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
             {
-                if (hostingEnvironment.IsDevelopment())
-                {
-                    builder.UseAspNetCore().DisableTransportSecurityRequirement();
-                }
-                else
-                {
-                    builder.UseAspNetCore();
-                }
-
-                builder.SetAccessTokenLifetime(TimeSpan.FromDays(90));
-
-                // override all endpoint uris
-                builder.SetIssuer(issuer);
-                builder.SetConfigurationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/openid-configuration"));
-                builder.SetCryptographyEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/jwks"));
-                builder.SetAuthorizationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/authorize"));
-                builder.SetTokenEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/token"));
-                builder.SetIntrospectionEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/introspect"));
-                builder.SetLogoutEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/logout"));
-                builder.SetRevocationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/revocat"));
-                builder.SetUserinfoEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/userinfo"));
-                builder.SetDeviceEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/device"));
-                builder.SetVerificationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/verify"));
-
-                // https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html
-                // https://learn.microsoft.com/zh-cn/dotnet/core/additional-tools/self-signed-certificates-guide#with-openssl
-                var certificate = new X509Certificate2(
-                    Path.Combine(AppContext.BaseDirectory, configuration["OpenIddict:CAFilePath"])); // TODO: 需生成证书 pki/ca.pfx
-                builder.AddSigningCertificate(certificate);
-                builder.AddEncryptionCertificate(certificate);
-            })
-            .AddValidation(options =>
-            {
-                options.AddAudiences("ProjectName");
-                options.SetIssuer(issuer);
-                options.UseLocalServer();
-                options.UseAspNetCore();
+                options.AddDevelopmentEncryptionAndSigningCertificate = false;
             });
-        });
+
+            // TODO configuration["OpenIddict:CAFilePath"] 二选一
+            //PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
+            //{
+            //    serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", "7c7f479f-2c0c-414c-89f9-f2c5051793f5");
+            //});
+        }
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
-
         context.Services.AddHealthChecks();
         context.Services.Configure<HealthCheckPublisherOptions>(options =>
         {
@@ -126,7 +139,8 @@ public class ProjectNameAuthServerModule : AbpModule
             options.Resources
                 .Get<ProjectNameResource>()
                 .AddBaseTypes(
-                    typeof(AbpUiResource)
+                    typeof(AbpUiResource),
+                    typeof(AccountResource)
                 );
         });
 
@@ -184,8 +198,7 @@ public class ProjectNameAuthServerModule : AbpModule
 
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
-            var connection = ConnectionMultiplexer
-                .Connect(configuration["Redis:Configuration"]!);
+            var connection = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
             return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
         });
 
@@ -208,6 +221,10 @@ public class ProjectNameAuthServerModule : AbpModule
             });
         });
 
+        context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>
+        {
+            options.IsDynamicClaimsEnabled = true;
+        });
         // TODO: ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
         context.Services.Configure<ForwardedHeadersOptions>(options =>
         {
@@ -268,7 +285,9 @@ public class ProjectNameAuthServerModule : AbpModule
         }
 
         app.UseUnitOfWork();
+        app.UseDynamicClaims();
         app.UseAuthorization();
+
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();

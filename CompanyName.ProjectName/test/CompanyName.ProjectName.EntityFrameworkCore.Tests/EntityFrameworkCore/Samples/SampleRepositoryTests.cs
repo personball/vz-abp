@@ -14,6 +14,7 @@ namespace CompanyName.ProjectName.EntityFrameworkCore.Samples;
  * (like default AppUser repository IRepository<AppUser, Guid> here).
  * Only test your custom repository methods.
  */
+[Collection(ProjectNameTestConsts.CollectionDefinitionName)]
 public class SampleRepositoryTests : ProjectNameEntityFrameworkCoreTestBase
 {
     private readonly IRepository<IdentityUser, Guid> _appUserRepository;

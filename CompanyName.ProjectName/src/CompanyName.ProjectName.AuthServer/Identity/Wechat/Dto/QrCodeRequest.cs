@@ -9,11 +9,11 @@ namespace CompanyName.ProjectName.Identity.Wechat.Dto
         /// <summary>
         /// 最大32个可见字符，只支持数字，大小写英文以及部分特殊字符：!#$&'()*+,/:;=?@-._~，其它字符请自行编码为合法字符（因不支持%，中文无法使用 urlencode 处理，请使用其他编码方式）
         /// </summary>
-        public string scene { get; set; }
+        public string scene { get; set; } = string.Empty;
         /// <summary>
         /// 必须是已经发布的小程序存在的页面（否则报错），例如 "pages/index/index" ,根路径前不要填加'/',不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面
         /// </summary>
-        public string page { get; set; }
+        public string page { get; set; } = string.Empty;
         /// <summary>
         /// 二维码的宽度
         /// </summary>

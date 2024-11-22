@@ -1,6 +1,7 @@
 {
   "culture": "nl",
   "texts": {
+    "AppName": "ProjectName",
     "Menu:Home": "Home",
     "Welcome": "Welkom",
     "LongWelcomeMessage": "Welkom bij de applicatie. Dit is een startup-project gebaseerd op het ABP-framework. Bezoek abp.io voor meer informatie."
