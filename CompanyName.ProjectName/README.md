@@ -26,7 +26,7 @@ abp install-libs # git add wwwroot -f 避免cicd中重新构建前端资产
 
 - 修改 StringEncryption.DefaultPassPhrase
 - 需要 redis 实例，默认密码 123qwe
-- 需要 postgresql 实例，默认密码 myPassword，用 postgres 账号
+- 需要 postgresql 实例，默认密码 123qwe，用 postgres 账号
 - 配置 DbMigrator 的 appsettings.json OpenIddict 客户端域名
 - AuthServer 配置自签证书 `pki/ca.pfx`
   - 生成 ca.pfx [self-signed-certificates-guide](https://learn.microsoft.com/en-us/dotnet/core/additional-tools/self-signed-certificates-guide)
