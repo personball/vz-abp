@@ -8,6 +8,8 @@ abp.io
 BaseOn:
 
 ``` bash
+dotnet tool install --global Volo.Abp.Cli --version 8.3.3
+
 abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf -v 8.3.3
 abp new CompanyName.ProjectName.ModuleName -t module --no-ui -v 8.3.3
 ```
