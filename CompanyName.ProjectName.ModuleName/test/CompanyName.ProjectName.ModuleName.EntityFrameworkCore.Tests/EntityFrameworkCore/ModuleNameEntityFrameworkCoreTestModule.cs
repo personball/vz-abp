@@ -10,10 +10,10 @@ using Volo.Abp.Uow;
 namespace CompanyName.ProjectName.ModuleName.EntityFrameworkCore;
 
 [DependsOn(
-    typeof(ModuleNameTestBaseModule),
+    typeof(ModuleNameApplicationTestModule),
     typeof(ModuleNameEntityFrameworkCoreModule),
     typeof(AbpEntityFrameworkCoreSqliteModule)
-    )]
+)]
 public class ModuleNameEntityFrameworkCoreTestModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -33,7 +33,7 @@ public class ModuleNameEntityFrameworkCoreTestModule : AbpModule
 
     private static SqliteConnection CreateDatabaseAndGetConnection()
     {
-        var connection = new SqliteConnection("Data Source=:memory:");
+        var connection = new AbpUnitTestSqliteConnection("Data Source=:memory:");
         connection.Open();
 
         new ModuleNameDbContext(

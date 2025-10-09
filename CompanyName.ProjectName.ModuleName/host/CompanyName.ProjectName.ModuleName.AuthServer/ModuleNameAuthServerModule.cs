@@ -146,8 +146,8 @@ public class ModuleNameAuthServerModule : AbpModule
 
         Configure<AbpAuditingOptions>(options =>
         {
-                //options.IsEnabledForGetRequests = true;
-                options.ApplicationName = "AuthServer";
+            //options.IsEnabledForGetRequests = true;
+            options.ApplicationName = "AuthServer";
         });
 
         Configure<AppUrlOptions>(options =>
@@ -168,7 +168,7 @@ public class ModuleNameAuthServerModule : AbpModule
         var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("ModuleName");
         if (!hostingEnvironment.IsDevelopment())
         {
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
+            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "ModuleName-Protection-Keys");
         }
 
@@ -201,7 +201,7 @@ public class ModuleNameAuthServerModule : AbpModule
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
 
-// app.UseForwardedHeaders(); // only need on k8s deploy behind a ingress gateway proxy
+        // app.UseForwardedHeaders(); // only need on k8s deploy behind a ingress gateway proxy
 
         if (env.IsDevelopment())
         {
@@ -215,7 +215,7 @@ public class ModuleNameAuthServerModule : AbpModule
 
         app.UseHttpsRedirection();
         app.UseCorrelationId();
-        app.UseStaticFiles();
+        app.MapAbpStaticAssets();
         app.UseRouting();
         app.UseCors();
         app.UseAuthentication();

@@ -3,17 +3,18 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>CompanyName.ProjectName.ModuleName</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.5" />
     <ProjectReference Include="..\..\src\CompanyName.ProjectName.ModuleName.EntityFrameworkCore\CompanyName.ProjectName.ModuleName.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\CompanyName.ProjectName.ModuleName.TestBase\CompanyName.ProjectName.ModuleName.TestBase.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="7.3.1" />
+    <ProjectReference Include="..\CompanyName.ProjectName.ModuleName.Application.Tests\CompanyName.ProjectName.ModuleName.Application.Tests.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="9.3.5" />
+
   </ItemGroup>
 
 </Project>

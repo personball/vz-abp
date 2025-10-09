@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "CompanyName.ProjectName.ModuleName": {
+      "path": "CompanyName.ProjectName.ModuleName.abpmdl"
+    }
+  }
+}

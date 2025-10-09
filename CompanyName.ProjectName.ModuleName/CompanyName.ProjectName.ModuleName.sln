@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyName.ProjectName.ModuleName.Installer", "src\CompanyName.ProjectName.ModuleName.Installer\CompanyName.ProjectName.ModuleName.Installer.csproj", "{BE39FD00-745B-4049-8161-FC129817CBE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyName.ProjectName.ModuleName.Blazor.WebAssembly.Bundling", "src\CompanyName.ProjectName.ModuleName.Blazor.WebAssembly.Bundling\CompanyName.ProjectName.ModuleName.Blazor.WebAssembly.Bundling.csproj", "{43E17629-2AA1-4B82-B70B-DB4B500BE19A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{BE39FD00-745B-4049-8161-FC129817CBE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE39FD00-745B-4049-8161-FC129817CBE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE39FD00-745B-4049-8161-FC129817CBE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43E17629-2AA1-4B82-B70B-DB4B500BE19A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43E17629-2AA1-4B82-B70B-DB4B500BE19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43E17629-2AA1-4B82-B70B-DB4B500BE19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43E17629-2AA1-4B82-B70B-DB4B500BE19A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +152,7 @@ Global
 		{690203F4-3CD5-4569-88D9-EE831EEA5F5F} = {E400416D-2895-4512-9D17-90681EEC7E0A}
 		{F6AC8D4A-EDD7-4514-8E8A-5BCB019864DB} = {E400416D-2895-4512-9D17-90681EEC7E0A}
 		{BE39FD00-745B-4049-8161-FC129817CBE4} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
+		{43E17629-2AA1-4B82-B70B-DB4B500BE19A} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4324B3B4-B60B-4E3C-91D8-59576B4E26DD}

@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  migrations:
+    build:
+      context: ../../
+      dockerfile: templates/service/database/Dockerfile
+    depends_on:
+      - sqlserver
+    environment:
+      - IdentityServer_DB=ModuleName_Identity
+      - ModuleName_DB=ModuleName_ModuleDb
+      - SA_PASSWORD=yourStrong(!)Password

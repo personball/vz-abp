@@ -3,15 +3,15 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net7.0</TargetFrameworks>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>CompanyName.ProjectName.ModuleName</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="7.3.1" />
-    <PackageReference Include="Volo.Abp.Authorization" Version="7.3.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="9.3.5" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="9.3.5" />
     <ProjectReference Include="..\CompanyName.ProjectName.ModuleName.Domain.Shared\CompanyName.ProjectName.ModuleName.Domain.Shared.csproj" />
   </ItemGroup>
 

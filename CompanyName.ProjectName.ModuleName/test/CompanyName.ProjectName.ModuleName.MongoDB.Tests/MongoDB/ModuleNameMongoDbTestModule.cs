@@ -6,9 +6,9 @@ using Volo.Abp.Uow;
 namespace CompanyName.ProjectName.ModuleName.MongoDB;
 
 [DependsOn(
-    typeof(ModuleNameTestBaseModule),
+    typeof(ModuleNameApplicationTestModule),
     typeof(ModuleNameMongoDbModule)
-    )]
+)]
 public class ModuleNameMongoDbTestModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

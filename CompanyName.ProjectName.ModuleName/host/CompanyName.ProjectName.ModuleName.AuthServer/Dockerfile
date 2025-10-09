@@ -1,11 +1,12 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:7.0-bullseye-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:7.0 AS build
-WORKDIR /
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
 COPY . .
-WORKDIR /src/host/CompanyName.ProjectName.ModuleName.AuthServer
+WORKDIR /src/templates/service/host/CompanyName.ProjectName.ModuleName.AuthServer
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
@@ -15,9 +14,9 @@ public class ModuleNameEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<ModuleNameDbContext>(options =>
         {
-            /* Add custom repositories here. Example:
-             * options.AddRepository<Question, EfCoreQuestionRepository>();
-             */
+                /* Add custom repositories here. Example:
+                 * options.AddRepository<Question, EfCoreQuestionRepository>();
+                 */
         });
     }
 }

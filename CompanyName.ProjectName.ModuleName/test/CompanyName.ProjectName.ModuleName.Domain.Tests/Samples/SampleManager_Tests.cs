@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
+using Volo.Abp.Modularity;
 using Xunit;
 
 namespace CompanyName.ProjectName.ModuleName.Samples;
 
-public class SampleManager_Tests : ModuleNameDomainTestBase
+public abstract class SampleManager_Tests<TStartupModule> : ModuleNameDomainTestBase<TStartupModule>
+    where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;
 

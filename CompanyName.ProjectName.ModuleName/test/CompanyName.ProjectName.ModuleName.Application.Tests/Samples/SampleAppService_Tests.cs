@@ -1,14 +1,16 @@
 ﻿using System.Threading.Tasks;
 using Shouldly;
+using Volo.Abp.Modularity;
 using Xunit;
 
 namespace CompanyName.ProjectName.ModuleName.Samples;
 
-public class SampleAppService_Tests : ModuleNameApplicationTestBase
+public abstract class SampleAppService_Tests<TStartupModule> : ModuleNameApplicationTestBase<TStartupModule>
+    where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;
 
-    public SampleAppService_Tests()
+    protected SampleAppService_Tests()
     {
         _sampleAppService = GetRequiredService<ISampleAppService>();
     }

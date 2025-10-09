@@ -14,7 +14,7 @@ abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf -v 
 
 mkdir CompanyName.ProjectName.ModuleName
 cd CompanyName.ProjectName.ModuleName
-abp new CompanyName.ProjectName.ModuleName -t module --no-ui -v 8.3.3
+abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui -v 8.3.3
 ```
 
 ## Usage

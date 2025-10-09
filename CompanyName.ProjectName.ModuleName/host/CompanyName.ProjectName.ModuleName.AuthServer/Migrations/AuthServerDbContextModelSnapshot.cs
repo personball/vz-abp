@@ -19,7 +19,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.PostgreSql)
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -62,6 +62,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
@@ -79,9 +80,10 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("ExecutionDuration");
 
                     b.Property<DateTime>("ExecutionTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -159,7 +161,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("ExecutionDuration");
 
                     b.Property<DateTime>("ExecutionTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("ExecutionTime");
 
                     b.Property<string>("ExtraProperties")
@@ -194,6 +196,34 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                     b.ToTable("AbpAuditLogActions", (string)null);
                 });
 
+            modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogExcelFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("FileName");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AbpAuditLogExcelFiles", (string)null);
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.EntityChange", b =>
                 {
                     b.Property<Guid>("Id")
@@ -205,7 +235,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("AuditLogId");
 
                     b.Property<DateTime>("ChangeTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("ChangeTime");
 
                     b.Property<byte>("ChangeType")
@@ -213,7 +243,6 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("ChangeType");
 
                     b.Property<string>("EntityId")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)")
                         .HasColumnName("EntityId");
@@ -415,15 +444,21 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreationTime");
 
                     b.Property<string>("Description")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -488,14 +523,20 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreationTime");
 
                     b.Property<int>("EntityVersion")
                         .HasColumnType("integer");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -588,6 +629,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
@@ -597,9 +639,10 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("character varying(64)");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -635,6 +678,62 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                     b.ToTable("AbpSecurityLogs", (string)null);
                 });
 
+            modelBuilder.Entity("Volo.Abp.Identity.IdentitySession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ClientId")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("Device")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("DeviceInfo")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("IpAddresses")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<DateTime?>("LastAccessed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SessionId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<DateTime>("SignedIn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("TenantId");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Device");
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("TenantId", "UserId");
+
+                    b.ToTable("AbpSessions", (string)null);
+                });
+
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -649,12 +748,13 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
@@ -666,7 +766,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("DeleterId");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("Email")
@@ -685,6 +785,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -705,7 +806,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("IsExternal");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
@@ -835,13 +936,13 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("EndTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("SourceUserId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("TargetUserId")
                         .HasColumnType("uuid");
@@ -893,7 +994,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
@@ -969,12 +1070,13 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
@@ -986,7 +1088,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("DeleterId");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("DisplayName")
@@ -999,6 +1101,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -1009,7 +1112,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("IsDeleted");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
@@ -1041,7 +1144,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
@@ -1065,6 +1168,10 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ApplicationType")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<string>("ClientId")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -1072,11 +1179,16 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                     b.Property<string>("ClientSecret")
                         .HasColumnType("text");
 
+                    b.Property<string>("ClientType")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<string>("ClientUri")
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
@@ -1086,7 +1198,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
@@ -1098,7 +1210,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("DeleterId");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("DisplayName")
@@ -1108,6 +1220,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -1117,8 +1230,11 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("IsDeleted");
 
+                    b.Property<string>("JsonWebKeySet")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
@@ -1143,9 +1259,8 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                     b.Property<string>("Requirements")
                         .HasColumnType("text");
 
-                    b.Property<string>("Type")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                    b.Property<string>("Settings")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -1165,46 +1280,18 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("DeletionTime");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("LastModifierId");
 
                     b.Property<string>("Properties")
                         .HasColumnType("text");
@@ -1239,12 +1326,13 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
@@ -1256,7 +1344,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("DeleterId");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("Description")
@@ -1272,6 +1360,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -1282,7 +1371,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("IsDeleted");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
@@ -1320,49 +1409,21 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("DeletionTime");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("ExpirationDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("LastModifierId");
 
                     b.Property<string>("Payload")
                         .HasColumnType("text");
@@ -1371,7 +1432,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("RedemptionDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReferenceId")
                         .HasMaxLength(100)
@@ -1546,6 +1607,55 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                     b.ToTable("AbpSettings", (string)null);
                 });
 
+            modelBuilder.Entity("Volo.Abp.SettingManagement.SettingDefinitionRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DefaultValue")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("text")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsEncrypted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsInherited")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsVisibleToClients")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("Providers")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("AbpSettingDefinitions", (string)null);
+                });
+
             modelBuilder.Entity("Volo.Abp.TenantManagement.Tenant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1554,12 +1664,13 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
@@ -1571,13 +1682,14 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("DeleterId");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("DeletionTime");
 
                     b.Property<int>("EntityVersion")
                         .HasColumnType("integer");
 
                     b.Property<string>("ExtraProperties")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
@@ -1588,7 +1700,7 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasColumnName("IsDeleted");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
@@ -1600,9 +1712,16 @@ namespace CompanyName.ProjectName.ModuleName.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
+
+                    b.HasIndex("NormalizedName");
 
                     b.ToTable("AbpTenants", (string)null);
                 });

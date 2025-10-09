@@ -15,6 +15,7 @@ using CompanyName.ProjectName.ModuleName.MultiTenancy;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
+using Volo.Abp.AspNetCore.Authentication.JwtBearer;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
@@ -45,6 +46,7 @@ namespace CompanyName.ProjectName.ModuleName;
     typeof(ModuleNameEntityFrameworkCoreModule),
     typeof(ModuleNameHttpApiModule),
     typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
+    typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
     typeof(AbpEntityFrameworkCorePostgreSqlModule),
@@ -203,7 +205,7 @@ public class ModuleNameHttpApiHostModule : AbpModule
 
         app.UseHttpsRedirection();
         app.UseCorrelationId();
-        app.UseStaticFiles();
+        app.MapAbpStaticAssets();
         app.UseRouting();
         app.UseCors();
         app.UseAuthentication();
@@ -225,7 +227,7 @@ public class ModuleNameHttpApiHostModule : AbpModule
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();
-        
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
