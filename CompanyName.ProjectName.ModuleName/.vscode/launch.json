@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/host/CompanyName.ProjectName.ModuleName.HttpApi.Host/bin/Debug/net7.0/CompanyName.ProjectName.ModuleName.HttpApi.Host.dll",
+            "program": "${workspaceFolder}/host/CompanyName.ProjectName.ModuleName.HttpApi.Host/bin/Debug/net9.0/CompanyName.ProjectName.ModuleName.HttpApi.Host.dll",
             "args": [],
             "cwd": "${workspaceFolder}/host/CompanyName.ProjectName.ModuleName.HttpApi.Host",
             "stopAtEntry": false,
@@ -38,7 +38,7 @@
             "request": "launch",
             "preLaunchTask": "build_auth",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/host/CompanyName.ProjectName.ModuleName.AuthServer/bin/Debug/net7.0/CompanyName.ProjectName.ModuleName.AuthServer.dll",
+            "program": "${workspaceFolder}/host/CompanyName.ProjectName.ModuleName.AuthServer/bin/Debug/net9.0/CompanyName.ProjectName.ModuleName.AuthServer.dll",
             "args": [],
             "cwd": "${workspaceFolder}/host/CompanyName.ProjectName.ModuleName.AuthServer",
             "stopAtEntry": false,
