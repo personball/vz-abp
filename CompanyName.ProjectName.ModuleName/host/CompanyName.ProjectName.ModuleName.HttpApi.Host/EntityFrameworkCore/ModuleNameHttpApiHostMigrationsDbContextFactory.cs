@@ -10,9 +10,6 @@ public class ModuleNameHttpApiHostMigrationsDbContextFactory : IDesignTimeDbCont
 {
     public ModuleNameHttpApiHostMigrationsDbContext CreateDbContext(string[] args)
     {
-        // https://www.npgsql.org/efcore/release-notes/6.0.html#opting-out-of-the-new-timestamp-mapping-logic
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        
         var configuration = BuildConfiguration();
 
         var builder = new DbContextOptionsBuilder<ModuleNameHttpApiHostMigrationsDbContext>()

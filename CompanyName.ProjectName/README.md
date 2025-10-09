@@ -32,6 +32,13 @@ abp install-libs # git add wwwroot -f 避免cicd中重新构建前端资产
   - 生成 ca.pfx [self-signed-certificates-guide](https://learn.microsoft.com/en-us/dotnet/core/additional-tools/self-signed-certificates-guide)
   - 添加 appsettings.json 配置节
   - 配置 csproj 如果较新则复制
+- 初始化 EntityFrameworkCore 的 Migrations
+
+```bash
+cd src/CompanyName.ProjectName.EntityFrameworkCore
+dotnet ef migrations add Init
+```
+
 
 https://code.visualstudio.com/Docs/editor/debugging#_multitarget-debugging
 

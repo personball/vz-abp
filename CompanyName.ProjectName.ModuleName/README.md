@@ -14,7 +14,7 @@ abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui
 
 - 修改 StringEncryption.DefaultPassPhrase
 - 需要 redis 实例，默认密码 123qwe
-- 需要 postgresql 实例，默认密码 myPassword，用 postgres 账号
+- 需要 postgresql 实例，默认密码 123qwe，用 postgres 账号
 
 ## setup git hook to enforce commit-msg format
 

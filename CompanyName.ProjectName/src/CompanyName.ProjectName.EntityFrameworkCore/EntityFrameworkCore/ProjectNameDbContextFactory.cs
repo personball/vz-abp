@@ -12,9 +12,6 @@ public class ProjectNameDbContextFactory : IDesignTimeDbContextFactory<ProjectNa
 {
     public ProjectNameDbContext CreateDbContext(string[] args)
     {
-        // https://www.npgsql.org/efcore/release-notes/6.0.html#opting-out-of-the-new-timestamp-mapping-logic
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
         ProjectNameEfCoreEntityExtensionMappings.Configure();
 
         var configuration = BuildConfiguration();
