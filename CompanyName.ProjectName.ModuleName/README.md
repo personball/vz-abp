@@ -5,7 +5,7 @@
 ``` bash
 mkdir CompanyName.ProjectName.ModuleName
 cd CompanyName.ProjectName.ModuleName
-abp new CompanyName.ProjectName.ModuleName -t module --no-ui
+abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui
 ```
 
 - replace sqlserver with postgresql

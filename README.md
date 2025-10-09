@@ -8,13 +8,13 @@ abp.io
 BaseOn:
 
 ``` bash
-dotnet tool install --global Volo.Abp.Cli --version 8.3.3
+dotnet tool install --global Volo.Abp.Cli --version 9.3.5
 
-abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf -v 8.3.3
+abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf -v 9.3.5
 
 mkdir CompanyName.ProjectName.ModuleName
 cd CompanyName.ProjectName.ModuleName
-abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui -v 8.3.3
+abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui -v 9.3.5
 ```
 
 ## Usage
