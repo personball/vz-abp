@@ -17,6 +17,9 @@ cd CompanyName.ProjectName.ModuleName
 abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui -v 9.3.5
 ```
 
+*Note:* `DateTime` 已配置为 `DateTimeKind.Utc`
+
+
 ## Usage
 
 ``` bash
