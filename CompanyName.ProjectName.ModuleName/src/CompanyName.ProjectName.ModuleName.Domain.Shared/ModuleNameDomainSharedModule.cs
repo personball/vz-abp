@@ -17,6 +17,11 @@ public class ModuleNameDomainSharedModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        Configure<AbpClockOptions>(options =>
+        {
+            options.Kind = DateTimeKind.Utc;
+        });
+
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
             options.FileSets.AddEmbedded<ModuleNameDomainSharedModule>();
