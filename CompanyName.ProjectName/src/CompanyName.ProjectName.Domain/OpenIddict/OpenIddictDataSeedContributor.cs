@@ -317,7 +317,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
         if ((redirectUris != null && redirectUris.Any()) || (postLogoutRedirectUris != null && postLogoutRedirectUris.Any()))
         {
-            application.Permissions.Add(OpenIddictConstants.Permissions.Endpoints.Logout);
+            application.Permissions.Add(OpenIddictConstants.Permissions.Endpoints.EndSession);
         }
 
         var buildInGrantTypes = new[] {

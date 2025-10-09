@@ -61,6 +61,34 @@ public class ProjectNameAuthServerModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
+        var baseUrl = configuration["AuthServer:Authority"]!;
+        var issuer = new Uri(baseUrl);
+        PreConfigure<OpenIddictServerOptions>(options =>
+        {
+            options.Issuer = issuer;
+            // override all endpoint uris
+            options.ConfigurationEndpointUris.Clear();
+            options.ConfigurationEndpointUris.Add(new Uri(baseUrl + "/.well-known/openid-configuration"));
+            options.JsonWebKeySetEndpointUris.Clear();
+            options.JsonWebKeySetEndpointUris.Add(new Uri(baseUrl + "/.well-known/jwks"));
+            options.AuthorizationEndpointUris.Clear();
+            options.AuthorizationEndpointUris.Add(new Uri(baseUrl + "/connect/authorize"));
+            options.TokenEndpointUris.Clear();
+            options.TokenEndpointUris.Add(new Uri(baseUrl + "/connect/token"));
+            options.IntrospectionEndpointUris.Clear();
+            options.IntrospectionEndpointUris.Add(new Uri(baseUrl + "/connect/introspect"));
+            options.EndSessionEndpointUris.Clear();
+            options.EndSessionEndpointUris.Add(new Uri(baseUrl + "/connect/logout"));
+            options.RevocationEndpointUris.Clear();
+            options.RevocationEndpointUris.Add(new Uri(baseUrl + "/connect/revocat"));
+            options.UserInfoEndpointUris.Clear();
+            options.UserInfoEndpointUris.Add(new Uri(baseUrl + "/connect/userinfo"));
+            options.DeviceAuthorizationEndpointUris.Clear();
+            options.DeviceAuthorizationEndpointUris.Add(new Uri(baseUrl + "/connect/device"));
+            options.EndUserVerificationEndpointUris.Clear();
+            options.EndUserVerificationEndpointUris.Add(new Uri(baseUrl + "/connect/verify"));
+        });
+
         PreConfigure<OpenIddictBuilder>(b =>
          {
              var issuer = new Uri(configuration["AuthServer:Authority"]!);
@@ -78,19 +106,6 @@ public class ProjectNameAuthServerModule : AbpModule
                  }
 
                  builder.SetAccessTokenLifetime(TimeSpan.FromDays(90));
-
-                 // override all endpoint uris
-                 builder.SetIssuer(issuer);
-                 builder.SetConfigurationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/openid-configuration"));
-                 builder.SetCryptographyEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/.well-known/jwks"));
-                 builder.SetAuthorizationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/authorize"));
-                 builder.SetTokenEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/token"));
-                 builder.SetIntrospectionEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/introspect"));
-                 builder.SetLogoutEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/logout"));
-                 builder.SetRevocationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/revocat"));
-                 builder.SetUserinfoEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/userinfo"));
-                 builder.SetDeviceEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/device"));
-                 builder.SetVerificationEndpointUris(new Uri(configuration["AuthServer:Authority"] + "/connect/verify"));
 
                  // https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html
                  // https://learn.microsoft.com/zh-cn/dotnet/core/additional-tools/self-signed-certificates-guide#with-openssl
