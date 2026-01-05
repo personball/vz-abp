@@ -1,24 +1,24 @@
-vz project templates
+# vz project templates
 
-# backend
+## backend
+
 abp.io
 
-## microservice:
+### microservice
 
 BaseOn:
 
 ``` bash
-dotnet tool install --global Volo.Abp.Cli --version 9.3.5
+dotnet tool install --global Volo.Abp.Cli --version 9.3.7
 
-abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf -v 9.3.5
+abp new CompanyName.ProjectName -dbms PostgreSQL --tiered --theme basic -csf -v 9.3.7
 
 mkdir CompanyName.ProjectName.ModuleName
 cd CompanyName.ProjectName.ModuleName
-abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui -v 9.3.5
+abp new CompanyName.ProjectName.ModuleName -t module -dbms PostgreSQL --no-ui -v 9.3.7
 ```
 
 *Note:* `DateTime` 已配置为 `DateTimeKind.Utc`
-
 
 ## Usage
 
