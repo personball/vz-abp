@@ -40,6 +40,7 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using OpenIddict.Server;
 
 namespace CompanyName.ProjectName;
 
