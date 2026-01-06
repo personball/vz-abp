@@ -41,6 +41,8 @@ using Volo.Abp.Security.Claims;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using OpenIddict.Server;
+using OpenIddict.Server.ExtensionGrants;
+using Volo.Abp.OpenIddict.ExtensionGrantTypes;
 
 namespace CompanyName.ProjectName;
 
@@ -114,6 +116,10 @@ public class ProjectNameAuthServerModule : AbpModule
                      Path.Combine(AppContext.BaseDirectory, configuration["OpenIddict:CAFilePath"]), null); // TODO: 需生成证书 pki/ca.pfx
                  builder.AddSigningCertificate(certificate);
                  builder.AddEncryptionCertificate(certificate);
+                 builder.Configure(openIddictServerOptions =>
+                 {
+                     openIddictServerOptions.GrantTypes.Add(WechatMiniProgramGrant.ExtensionGrantName);
+                 });
              })
              .AddValidation(options =>
              {
@@ -148,6 +154,11 @@ public class ProjectNameAuthServerModule : AbpModule
         {
             options.Delay = TimeSpan.FromSeconds(2);
             options.Predicate = (check) => check.Tags.Contains("ready");
+        });
+
+        Configure<AbpOpenIddictExtensionGrantsOptions>(options =>
+        {
+            options.Grants.Add(WechatMiniProgramGrant.ExtensionGrantName, new WechatMiniProgramGrant());
         });
 
         Configure<AbpLocalizationOptions>(options =>
@@ -266,7 +277,7 @@ public class ProjectNameAuthServerModule : AbpModule
             configuration.GetSection("IWeChatAppApi").Bind(opt);
         });
 
-        //Configure<WechatOptions>(options => configuration.GetSection(WechatOptions.SectionName).Bind(options));
+        Configure<WechatOptions>(options => configuration.GetSection(WechatOptions.SectionName).Bind(options));
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

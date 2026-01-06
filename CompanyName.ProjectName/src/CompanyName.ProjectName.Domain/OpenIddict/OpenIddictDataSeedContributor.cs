@@ -145,7 +145,36 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 }
             );
         }
+        //ProjectName_WechatMiniApp
+        var wechatMiniAppClientId = configurationSection["ProjectName_WechatMiniApp:ClientId"];
+        if (!wechatMiniAppClientId.IsNullOrWhiteSpace())
+        {
+            var wechatMiniAppClientRootUrl = configurationSection["ProjectName_WechatMiniApp:RootUrl"]!.TrimEnd('/');
+            var wechatMiniAppClientRootUrl2 = configurationSection["ProjectName_WechatMiniApp:RootUrl2"]!.TrimEnd('/');
 
+            await CreateApplicationAsync(
+                name: wechatMiniAppClientId!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "WeChat Mini App",
+                secret: null,
+                grantTypes: new List<string> {
+                    OpenIddictConstants.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.GrantTypes.RefreshToken,
+                    "WechatMiniProgramGrant"
+                },
+                scopes: commonScopes,
+                redirectUris: new List<string> {
+                    wechatMiniAppClientRootUrl,
+                    wechatMiniAppClientRootUrl2
+                },
+                clientUri: wechatMiniAppClientRootUrl,
+                postLogoutRedirectUris: new List<string> {
+                    wechatMiniAppClientRootUrl,
+                    wechatMiniAppClientRootUrl2
+                }
+            );
+        }
         // vue3
         var vue3ClientId = configurationSection["ProjectName_Vue:ClientId"];
         if (!vue3ClientId.IsNullOrWhiteSpace())

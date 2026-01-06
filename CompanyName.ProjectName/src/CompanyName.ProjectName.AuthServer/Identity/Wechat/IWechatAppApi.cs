@@ -32,6 +32,16 @@ namespace CompanyName.ProjectName.Identity.Wechat
         ITask<HttpResponseMessage> GetWXCodeUnlimit(string access_token, [JsonContent] QrCodeRequest request);
 
         /// <summary>
+        /// 获取用户手机号
+        /// </summary>
+        /// <param name="access_token">基于 client_credential 的应用级 access token</param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("/wxa/business/getuserphonenumber")]
+        [JsonReturn]
+        ITask<GetUserPhonenumberResult> GetUserPhonenumber(string access_token, [JsonContent] GetUserPhonenumberRequest request);
+
+        /// <summary>
         /// 发送统一服务消息
         /// </summary>
         /// <param name="access_token">基于 client_credential 的应用级 access token</param>
@@ -40,7 +50,7 @@ namespace CompanyName.ProjectName.Identity.Wechat
         [HttpPost("/cgi-bin/message/wxopen/template/uniform_send")]
         ITask<HttpResponseMessage> SendUniformMsgAsync(string access_token, [JsonContent] object input);
 
-         /// <summary>
+        /// <summary>
         /// 公众号开发 模板消息接口
         /// https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
         /// </summary>
@@ -49,11 +59,10 @@ namespace CompanyName.ProjectName.Identity.Wechat
         /// <returns></returns>
         [HttpPost("/cgi-bin/message/template/send")]
         [JsonReturn]
-        ITask<TplMsgResult> TplMsgNotify(string access_token, [JsonContent]object input);
+        ITask<TplMsgResult> TplMsgNotify(string access_token, [JsonContent] object input);
     }
 }
 
 
 
 
-       
