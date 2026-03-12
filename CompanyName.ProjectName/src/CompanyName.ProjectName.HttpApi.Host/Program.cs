@@ -5,8 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+#if !DEBUG
 using Serilog.Formatting.Json;
-
+#endif
 namespace CompanyName.ProjectName;
 
 public class Program
@@ -17,13 +18,15 @@ public class Program
 #if DEBUG
             .MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-#endif
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information)
+            .MinimumLevel.Override("Volo.Abp", LogEventLevel.Information)
+            .MinimumLevel.Override("CompanyName.ProjectName", LogEventLevel.Debug)
+#else
+            .MinimumLevel.Warning()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
             .MinimumLevel.Override("Volo.Abp", LogEventLevel.Warning)
-#if DEBUG
-                .MinimumLevel.Override("CompanyName.ProjectName", LogEventLevel.Debug)
-#else
-                .MinimumLevel.Override("CompanyName.ProjectName", LogEventLevel.Information)
+            .MinimumLevel.Override("CompanyName.ProjectName", LogEventLevel.Warning)
 #endif
             .Enrich.FromLogContext()
 #if DEBUG
