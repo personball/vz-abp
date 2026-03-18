@@ -147,6 +147,13 @@ public class ProjectNameHttpApiHostModule : AbpModule
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => TypeHelper.GetFullNameHandlingNullableAndGenerics(type));
 
+                options.CustomOperationIds(apiDesc =>
+                {
+                    var controller = apiDesc.ActionDescriptor.RouteValues["controller"];
+                    var action = apiDesc.ActionDescriptor.RouteValues["action"] ?? apiDesc.ActionDescriptor.Id;
+                    return $"{controller}_{action}";
+                });
+
                 options.DocumentFilter<SwaggerTagsFilter>();
 
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, typeof(ProjectNameApplicationContractsModule).Assembly.GetName().Name + ".xml"));
