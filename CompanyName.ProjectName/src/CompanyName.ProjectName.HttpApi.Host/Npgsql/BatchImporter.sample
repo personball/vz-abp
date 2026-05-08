@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace CompanyName.ProjectName.Npgsql;
+
+// 定义在domain层
+public interface IActionDefinitionBatchImporter : ITransientDependency
+{
+    Task ImportAsync(List<ActionDefinitionBatchModel> actions, DbConnection dbConnection = null, CancellationToken cancellationToken = default);
+}
+
+// 实现在host
+public class ActionDefinitionBatchImporter : BatchImporterBase<ActionDefinitionDbInfoProvider>, IActionDefinitionBatchImporter
+{
+    public async Task ImportAsync(List<ActionDefinitionBatchModel> actions, DbConnection dbConnection = null, CancellationToken cancellationToken = default)
+    {
+        var dbFields = DbInfoProvider.DbFields.ToArray();
+        if (dbFields.Length == 0)
+        {
+            return;
+        }
+
+        var dbFieldMap = dbFields.ToDictionary(f => f.Name, f => f);
+        var now = Clock.Now;
+
+        await WithConnectionAsync(
+            dbConnection,
+            async (connection) =>
+            {
+                await using (var writer = connection.BeginBinaryImport(BuildBinaryImportCommand(DbInfoProvider.TableName, dbFields)))
+                {
+                    foreach (var item in actions)
+                    {
+                        await writer.StartRowAsync(cancellationToken);
+
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.Id)], GuidGenerator.Create(), cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.CreationTime)], now, cancellationToken);
+                        await writer.WriteFieldValueAsync<Guid>(dbFieldMap[nameof(ActionDefinition.CreatorId)], cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.AppId)], item.AppId, cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.FormId)], item.FormId, cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.FormAggregateId)], item.FormAggregateId, cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.PageId)], item.PageId, cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.ActionId)], item.ActionId, cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.DisplayName)], item.DisplayName, cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.AggregateOperationBindings)], JsonSerializer.Serialize(item.AggregateOperationBindings), cancellationToken);
+                        await writer.WriteFieldValueAsync(dbFieldMap[nameof(ActionDefinition.TenantId)], item.TenantId, cancellationToken);
+                    }
+
+                    await writer.CompleteAsync(cancellationToken);
+                }
+            }, cancellationToken);
+    }
+}
+
+
+public sealed class ActionDefinitionDbInfoProvider : INpgsqlDbInfoProvider
+{
+    public string TableName => "ActionDefinitions";
+
+    public IEnumerable<NpgsqlDbField> DbFields
+    {
+        get
+        {
+            yield return new UuidNpgsqlDbField(nameof(ActionDefinition.Id));
+            yield return new TimestampNpgsqlDbField(nameof(ActionDefinition.CreationTime));
+            yield return new NullableUuidNpgsqlDbField(nameof(ActionDefinition.CreatorId), hasValue: false);
+            yield return new UuidNpgsqlDbField(nameof(ActionDefinition.AppId));
+            yield return new NullableUuidNpgsqlDbField(nameof(ActionDefinition.FormId));
+            yield return new VarcharNpgsqlDbField(nameof(ActionDefinition.FormAggregateId));
+            yield return new NullableUuidNpgsqlDbField(nameof(ActionDefinition.PageId));
+            yield return new VarcharNpgsqlDbField(nameof(ActionDefinition.ActionId));
+            yield return new VarcharNpgsqlDbField(nameof(ActionDefinition.DisplayName));
+            yield return new JsonbNpgsqlDbField<Dictionary<string, List<string>>>(nameof(ActionDefinition.AggregateOperationBindings));
+            yield return new NullableUuidNpgsqlDbField(nameof(ActionDefinition.TenantId));
+        }
+    }
+}
